@@ -18,6 +18,7 @@ Y = data.iloc[:, cols-1:cols]
 X = np.matrix(X.values)
 Y = np.matrix(Y.values)
 theta = np.matrix(np.array([0, 0]))
+
 # 代价函数
 def computeCost(X, Y, theta):
     inner = np.power((X * theta.T) - Y, 2)
@@ -33,12 +34,13 @@ print(normalEqn(X, Y))
 # 梯度下降的theta为 matrix([[-3.24140214,  1.1272942 ]])
 # 梯度下降的cost为 4.515955503078912
 computeCost(X, Y, theta.reshape(1, -1))
-
 print(computeCost(X, Y, theta.reshape(1, -1)))
+
 # 画出拟合图像
 x = np.linspace(data.MDA.min(), data.MDA.max(), 100)
 f = theta[0,0] + theta[1,0] * x
 
+#图像优化，设置数值
 plt.figure(figsize=(12, 8))
 plt.xlabel('X')
 plt.ylabel('Y',)
