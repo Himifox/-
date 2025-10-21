@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+encodings = ['gbk',]
+data = pd.read_csv('urinary_data.csv', encoding='gbk',usecols=['MDA','NGAL'])
+data.plot(kind='scatter', x='MDA', y='NGAL', figsize=(12,8))
+
+data.insert(0, 'Ones', 1)
+
+cols = data.shape[1]
+print(cols)
+X = data.iloc[:, 0:cols-1]
+Y = data.iloc[:, cols-1:cols]
+
+X = np.matrix(X.values)
+Y = np.matrix(Y.values)
+theta = np.matrix(np.array([0, 0]))
+# 代价函数
+def computeCost(X, Y, theta):
+    inner = np.power((X * theta.T) - Y, 2)
+    return np.sum(inner) / (2 * len(X))
+
+def normalEqn(X, Y):
+    theta = np.linalg.inv(X.T@X)@X.T@Y
+    return theta
+
+theta = normalEqn(X, Y)
+
+print(normalEqn(X, Y))
+# 梯度下降的theta为 matrix([[-3.24140214,  1.1272942 ]])
+# 梯度下降的cost为 4.515955503078912
+computeCost(X, Y, theta.reshape(1, -1))
+
+print(computeCost(X, Y, theta.reshape(1, -1)))
+# 画出拟合图像
+x = np.linspace(data.MDA.min(), data.MDA.max(), 100)
+f = theta[0,0] + theta[1,0] * x
+
+plt.figure(figsize=(12, 8))
+plt.xlabel('X')
+plt.ylabel('Y',)
+l1 = plt.plot(x, f, label='Prediction', color='red')
+l2 = plt.scatter(data.MDA, data.NGAL, label='Traing Data' ,)
+plt.legend(loc='best')
+plt.title('Predicted Profit vs Population Size')
+plt.show()
